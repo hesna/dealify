@@ -15,7 +15,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Validator $validator)
+    public function store(Request $request)
     {
         if (($validator = $this->productRequestValidator($request))->fails()){
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
