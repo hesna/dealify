@@ -9,6 +9,8 @@ class Deal extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['number_of_products', 'price'];
+
     public function product()
     {
         return $this->belongsTo(Product::class);    	

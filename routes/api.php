@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductDealController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,6 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::apiResource('products', ProductController::class)->except(['index', 'destroy']);
+Route::apiResource('products.deals', ProductDealController::class)->only(['index', 'store']);
+Route::delete('products/{product}/deals', [ProductDealController::class, 'destroy']);
