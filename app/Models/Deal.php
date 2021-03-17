@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Deal extends Model
 {
     use HasFactory;
 
-    public function deals()
+    public function product()
     {
-        return $this->hasMany(Deal::class);
+        return $this->belongsTo(Product::class);    	
     }
 }
