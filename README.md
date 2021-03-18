@@ -343,8 +343,10 @@ There are many enhancements still applicable on Dealify, most important ones inc
 ---
 
 Developed with Laravel framework.
-<img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="100">
+
 As requested by Devolon.
+<br>
+<img src="https://www.gemsdigitalmedia.com/wp-content/uploads/2017/08/laravel-logo.png" width="100">
 <img src="https://media-exp1.licdn.com/dms/image/C560BAQE0KP4uvwVOGg/company-logo_200_200/0/1519874975273?e=2159024400&v=beta&t=CkfwEoN1f15LYPPpzpLnceXBQ-lOz4MxfTTlHeODoJg" width="100">
 
 
