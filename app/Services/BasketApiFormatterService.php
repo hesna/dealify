@@ -3,8 +3,9 @@ namespace App\Services;
 
 use App\Classes\Basket;
 use App\Classes\BasketProduct;
+use App\Contracts\BasketServiceInterface;
 
-class BasketFormatterService
+class BasketApiFormatterService implements \App\Contracts\BasketFormatterServiceInterface
 {
 	protected $basketService;
 

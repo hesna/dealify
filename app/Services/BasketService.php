@@ -3,19 +3,21 @@ namespace App\Services;
 
 use App\Classes\Basket;
 use App\Classes\BasketProduct;
+use App\Contracts\ProductServiceInterface;
+use App\Contracts\ProductDealsServiceInterface;
 
 /**
  * Handles the logic related to the basket
  */
-class BasketService
+class BasketService implements \App\Contracts\BasketServiceInterface
 {
 	protected $dealService;
-	protected $productServce;
+	protected $productService;
 
-	function __construct(ProductService $productServce, ProductDealsService $dealService)
+	public function __construct(ProductServiceInterface $productService, ProductDealsServiceInterface $dealService)
 	{
 		$this->dealService = $dealService;
-		$this->productServce = $productServce;
+		$this->productService = $productService;
 	}
 
 	public function checkout(array $productIds)
@@ -49,7 +51,7 @@ class BasketService
 
 	protected function fillBasket(Basket $basket, array $productIds)
 	{
-		$products = $this->productServce->getProductsbyIds($productIds);
+		$products = $this->productService->getProductsbyIds($productIds);
 		$occurances = array_count_values($productIds);
 		foreach ($products as $product) {
 			$bp = new BasketProduct(

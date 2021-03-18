@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Deal;
 use App\Models\Product;
-use App\Services\ProductDealsService;
+use App\Contracts\ProductDealsServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +28,7 @@ class ProductDealController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Product $product, Request $request, ProductDealsService $pdService)
+    public function store(Product $product, Request $request, ProductDealsServiceInterface $pdService)
     {
         if (!empty($errors = $this->getDealsRequestErrors($request))){
             return response()->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);

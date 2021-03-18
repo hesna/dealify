@@ -9,7 +9,7 @@ use App\Classes\BasketProduct;
 /**
  * Handles the logic related to productdeals
  */
-class ProductDealsService
+class ProductDealsService implements \App\Contracts\ProductDealsServiceInterface
 {
 	/**
 	 * @param Product

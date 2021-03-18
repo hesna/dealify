@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Models\Product;
 
-class ProductService
+class ProductService implements \App\Contracts\ProductServiceInterface
 {
 
 	public function getProductsbyIds(array $ids)

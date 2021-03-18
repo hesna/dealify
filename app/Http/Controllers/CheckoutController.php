@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BasketService;
-use App\Services\BasketFormatterService;
+use App\Contracts\BasketServiceInterface;
+use App\Contracts\BasketFormatterServiceInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,8 +19,8 @@ class CheckoutController extends Controller
      */
     public function __invoke(
         Request $request, 
-        BasketService $basketService, 
-        BasketFormatterService $basketFormatter
+        BasketServiceInterface $basketService, 
+        BasketFormatterServiceInterface $basketFormatter
     ) {
         $validator = Validator::make($request->all(), [
             'products' => 'required|array',
