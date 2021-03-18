@@ -207,6 +207,7 @@ Finally you may give an array of product ids and you check in customer basket, a
 
 ##### POST /checkout
 **Request Body** 
+
 client easily sends an array of ids, in any order. ids only need to map to an existing product.
 
 ```json
@@ -256,6 +257,7 @@ client easily sends an array of ids, in any order. ids only need to map to an ex
 ```
 
 **Response**
+
 he/she will recieve a report consisting a list of products he's buying, deals applied on his basket, total price before and after applying deals and amount of discounts he's gained. 
 
 ```json
@@ -326,7 +328,14 @@ There are also db seeds provided to help you kickstart the project and get to th
 
 `php artisan db:seed`  
 
-Also there is a Postman collection provided in repo to make working with APIs easier.
+To make sure everything is working, you may run application's tests. don't forget to create and config a test database before running them!
+
+`php artisan test`
+
+<img width="456" alt="Screen Shot 2021-03-19 at 1 34 12 AM" src="https://user-images.githubusercontent.com/2319368/111703710-44a10b00-8853-11eb-8558-05e3af82f4fe.png">
+
+
+Also there is a [Postman Collection](https://github.com/hesna/dealify/blob/main/Dealify.postman_collection.json) provided in repo to make working with APIs easier.
 
 ## Notables
 - As mentioned before, Dealify handles multiple **same name rules** in a way most profit is gained by user. 
@@ -339,8 +348,8 @@ Also there is a Postman collection provided in repo to make working with APIs ea
 
 ## TODOs
 There are many enhancements still applicable on Dealify, most important ones include:
-- Write unit and feature tests for system
 - Dockerise the app
+- Write some unit tests for system
 - Make deals related to a product invalid, if the price of the product is changed.
 - Further refactor core services and objects
 
