@@ -94,6 +94,7 @@ we have following APIs to deal with product deals:
 
 ##### POST /products/{pid}/deals
 **Request Body** 
+
 client can provide the pricing rules for a product in a json format. each deal should include number of products, and discounted price.
 validations are in place to make sure requirements are met. number must be between 2 and 50, and most importantly a client must not pass two different rules for a single number of products.
 
@@ -309,6 +310,7 @@ he/she will recieve a report consisting a list of products he's buying, deals ap
 ```
 
 **IMPORTANT NOTE**
+
 When faced with multiple deals applicable on a basket, Dealify applies the best combination for user to earn most discount.
 under the hood, it is calculating the amount of discount each deal is offering, and tries to apply most profitable deals first.
 in above example, given 12 products with code 5, Dealify applied `5*5` twice and `5*2` once, while there is another `5*3` rule also available. 
@@ -317,9 +319,11 @@ in above example, given 12 products with code 5, Dealify applied `5*5` twice and
 ## Installation
 You may clone the repo and deploy it like any other standard laravel project.
 Don't forget to run migrations first:
+
 `php artisan migrate`
 
 There are also db seeds provided to help you kickstart the project and get to the checkout easily. seeder creates a number of products and basic but logical deals for them:
+
 `php artisan db:seed`  
 
 Also there is a Postman collection provided in repo to make working with APIs easier.
@@ -342,9 +346,7 @@ There are many enhancements still applicable on Dealify, most important ones inc
 
 ---
 
-Developed with Laravel framework.
-
-As requested by Devolon.
+Developed with Laravel framework. as requested by Devolon.
 <br>
 <img src="https://www.gemsdigitalmedia.com/wp-content/uploads/2017/08/laravel-logo.png" width="100">
 <img src="https://media-exp1.licdn.com/dms/image/C560BAQE0KP4uvwVOGg/company-logo_200_200/0/1519874975273?e=2159024400&v=beta&t=CkfwEoN1f15LYPPpzpLnceXBQ-lOz4MxfTTlHeODoJg" width="100">

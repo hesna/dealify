@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "432052e1-27c9-45a7-9685-bc6e46dc9147",
+		"name": "Dealify",
+		"description": "a list of exposed APIs in dealify!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "shiny new thing",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "70",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{endpoint}}/products",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Creates a new Product"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "new name",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "220",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{endpoint}}/products/21",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products",
+						"21"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Updates a product name & price"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/products/1",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				},
+				"description": "shows a specific product's data"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Product Deals",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/products/20/deals",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products",
+						"20",
+						"deals"
+					]
+				},
+				"description": "lists a specific product's deals, if any."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product Deals",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/products/20/deals",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products",
+						"20",
+						"deals"
+					]
+				},
+				"description": "deletes all deals related to a product"
+			},
+			"response": []
+		},
+		{
+			"name": "Set Product Deals",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deals\": [\n        {\n            \"number_of_products\": 5,\n            \"price\": 800\n        },\n        {\n            \"number_of_products\": 4,\n            \"price\": 650\n        },\n        {\n            \"number_of_products\": 10,\n            \"price\": 1700\n        },\n        {\n            \"number_of_products\": 2,\n            \"price\": 150\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/products/20/deals",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"products",
+						"20",
+						"deals"
+					]
+				},
+				"description": "sets a product's deals. replaces old ones with the new batch."
+			},
+			"response": []
+		},
+		{
+			"name": "Checkout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"products\": [\n        {\n            \"id\": 5\n        },\n        {\n            \"id\": 4\n        },\n        {\n            \"id\": 10\n        },\n        {\n            \"id\": 2\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{endpoint}}/checkout",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"checkout"
+					]
+				},
+				"description": "get a list of products and calculates total price"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "57a9591f-ec8d-4075-9236-5428b2bc0c3d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6d50fc1f-bdfb-4af0-ace2-1b2f17d74736",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b90a0286-dad7-47f6-9132-fb73f19f11f7",
+			"key": "endpoint",
+			"value": "http://dealify.local/api"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
