@@ -9,18 +9,18 @@ class Basket
 	/**
 	 * @var array of BasketProducts
 	 */
-	protected $products;
+	protected $products = [];
 
 	/**
 	 * plain list of checkedout products
 	 * @var array of ids
 	 */
-	protected $rawProducts;
+	protected $rawProducts = [];
 
 	/**
 	 * @var array of Deals
 	 */
-	protected $appliedDeals;
+	protected $appliedDeals = [];
 
 	public function getProducts()
 	{

@@ -11,6 +11,15 @@ class Deal extends Model
 
     protected $fillable = ['number_of_products', 'price'];
 
+    protected static function booted()
+    {
+        static::saving(function ($deal) {
+            if (is_numeric($deal->number_of_products) and $deal->number_of_products > 0) {
+            	$deal->unit_price = round($deal->price/$deal->number_of_products, 1);
+            }
+        });
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);    	

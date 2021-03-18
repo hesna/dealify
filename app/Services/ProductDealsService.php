@@ -96,6 +96,8 @@ class ProductDealsService
 	/**
 	 * this method only loads deals that are applicable to given products
 	 * that's how we deal with thousands of deals!
+	 * and it sorts them by their profitablity for the user
+	 * that's how we solve the multiple rules problem!
 	 * 
 	 * @param  Basket 
 	 * 
@@ -109,6 +111,9 @@ class ProductDealsService
 		$dealables = array_filter(array_count_values($basket->getRawProductCodes()), function($value) {
 			return $value > 1;
 		});
+		if (empty($dealables)) {
+			return [];
+		}
 
 		// we only load deals that are applicable to the number of each product we have!
 		$query = Deal::select(['product_id', 'number_of_products', 'price']);
@@ -118,8 +123,8 @@ class ProductDealsService
 			});
 		}
 		
-		// finally we group each products rules together
-		foreach ($query->get()->toArray() as $deal) {
+		// finally we sort deals based on their profit for user and group each products rules together
+		foreach ($query->orderBy('unit_price')->get()->toArray() as $deal) {
 			$deals[$deal['product_id']][] = $deal; 
 		}
 

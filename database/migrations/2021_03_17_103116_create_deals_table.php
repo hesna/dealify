@@ -18,6 +18,7 @@ class CreateDealsTable extends Migration
             $table->foreignId('product_id');
             $table->unsignedSmallInteger('number_of_products');
             $table->unsignedInteger('price');
+            $table->unsignedFloat('unit_price');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');

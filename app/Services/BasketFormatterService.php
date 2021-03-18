@@ -32,6 +32,7 @@ class BasketFormatterService
 		$output = [];
 		foreach ($basket->getRawProducts() as $product) {
 			$output[] = [
+				'code' => $product->getCode(),
 				'name' => $product->getName(),
 				'price' => $product->getPrice(),
 				'count' => $product->getCount(),
