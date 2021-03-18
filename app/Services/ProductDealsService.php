@@ -51,7 +51,7 @@ class ProductDealsService
 				$deal['price'],
 				0,
 			);			
-			$this->applyDealToProduct($basket, $product, $newProduct, $deal['number_of_products']);
+			$this->applyDealToProduct($basket, $product, $newProduct, $deal);
 		}
 
 		if ($product->getCount() > 0) {
@@ -67,7 +67,7 @@ class ProductDealsService
 	 * @param  Basket
 	 * @param  BasketProduct the original product added to the basket
 	 * @param  BasketProduct the virtual bundle created by the deal
-	 * @param  integer number of products deal requires to create a bundle
+	 * @param  array deal
 	 * 
 	 * @return void
 	 */
@@ -75,17 +75,22 @@ class ProductDealsService
 		Basket $basket, 
 		BasketProduct $rawProduct,
 		BasketProduct $newProduct,
-		int $requiredNumberForDeal
+		array $deal
 	) {
-		if ($rawProduct->getCount() < $requiredNumberForDeal) {
+		if ($rawProduct->getCount() < $deal['number_of_products']) {
 			if ($newProduct->getCount() > 0) {
 				$basket->add($newProduct);
+				$appliedDeal = $deal + [
+					'product_name' => $rawProduct->getName(), 
+					'count' => $newProduct->getCount()
+				];
+				$basket->addAppliedDeal($appliedDeal);
 			}
 			return;
 		}
 		$newProduct->setCount($newProduct->getCount()+1);
-		$rawProduct->setCount($rawProduct->getCount() - $requiredNumberForDeal);
-		$this->applyDealToProduct($basket, $rawProduct, $newProduct, $requiredNumberForDeal);
+		$rawProduct->setCount($rawProduct->getCount() - $deal['number_of_products']);
+		$this->applyDealToProduct($basket, $rawProduct, $newProduct, $deal);
 	}	
 
 	/**

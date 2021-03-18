@@ -27,6 +27,11 @@ class Basket
 		return $this->products;
 	}
 
+	public function getAppliedDeals()
+	{
+		return $this->appliedDeals;
+	}	
+
 	public function getRawProducts()
 	{
 		return $this->rawProducts;
@@ -52,5 +57,10 @@ class Basket
 	public function addRaw(BasketProduct $bp)
 	{
 		$this->rawProducts[] = $bp;
+	}
+
+	public function addAppliedDeal($deal)
+	{
+		$this->appliedDeals[] = $deal;
 	}
 }

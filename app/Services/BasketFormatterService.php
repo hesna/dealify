@@ -20,9 +20,10 @@ class BasketFormatterService
 
 		return [
 			'products' => $this->getSimpleProductsList($basket),
-			'totalRawPrice' => $trp,
-			'totalPrice' => $tp,
-			'total discount' => $trp - $tp
+			'applied_deals' => $this->getSimpleDealsList($basket),
+			'total_raw_price' => $trp,
+			'total_price' => $tp,
+			'total_discount' => $trp - $tp
 		];
 	}
 
@@ -39,4 +40,19 @@ class BasketFormatterService
 
 		return $output;
 	}
+
+	protected function getSimpleDealsList(Basket $basket)
+	{
+		$output = [];
+		foreach ($basket->getAppliedDeals() as $deal) {
+			$output[] = [
+				'product_name' => $deal['product_name'],
+				'number_of_products' => $deal['number_of_products'],
+				'price' => $deal['price'],
+				'match_times' => $deal['count'],
+			];
+		}
+
+		return $output;
+	}	
 }
