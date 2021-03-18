@@ -6,18 +6,30 @@ use App\Classes\BasketProduct;
 
 class BasketFormatterService
 {
+	protected $basketService;
+
+	public function __construct(BasketService $basketService)
+	{
+		$this->basketService = $basketService;
+	}
+
 	public function toFrindlyArray(Basket $basket)
 	{
+		$trp = $this->basketService->getTotalRawPrice($basket);
+		$tp = $this->basketService->getTotalPrice($basket);
+
 		return [
 			'products' => $this->getSimpleProductsList($basket),
-			'totalPrice' => $basket->getTotalPrice(),
+			'totalRawPrice' => $trp,
+			'totalPrice' => $tp,
+			'total discount' => $trp - $tp
 		];
 	}
 
 	protected function getSimpleProductsList(Basket $basket)
 	{
 		$output = [];
-		foreach ($basket->getProducts() as $product) {
+		foreach ($basket->getRawProducts() as $product) {
 			$output[] = [
 				'name' => $product->getName(),
 				'price' => $product->getPrice(),

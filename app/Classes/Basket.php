@@ -1,9 +1,6 @@
 <?php
 namespace App\Classes;
 
-use App\Models\Deal;
-use App\Models\Product;
-
 /**
  * holds data of the current checkedout basket
  */
@@ -15,6 +12,12 @@ class Basket
 	protected $products;
 
 	/**
+	 * plain list of checkedout products
+	 * @var array of ids
+	 */
+	protected $rawProducts;
+
+	/**
 	 * @var array of Deals
 	 */
 	protected $appliedDeals;
@@ -24,18 +27,30 @@ class Basket
 		return $this->products;
 	}
 
+	public function getRawProducts()
+	{
+		return $this->rawProducts;
+	}	
+
+	public function getRawProductCodes()
+	{
+		$codes = [];
+		foreach ($this->rawProducts as $product) {
+			for ($i=0; $i < $product->getCount(); $i++) { 
+				$codes[] = $product->getCode();
+			}
+		}
+
+		return $codes;
+	}		
+
 	public function add(BasketProduct $bp)
 	{
 		$this->products[] = $bp;
 	}
 
-	public function getTotalPrice()
+	public function addRaw(BasketProduct $bp)
 	{
-		$totalPrice = 0;
-		foreach ($this->products as $product) {
-			$totalPrice += $product->getPrice() * $product->getCount();
-		}
-
-		return $totalPrice;
+		$this->rawProducts[] = $bp;
 	}
 }

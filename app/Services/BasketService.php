@@ -9,10 +9,12 @@ use App\Classes\BasketProduct;
  */
 class BasketService
 {
+	protected $dealService;
 	protected $productServce;
 
-	function __construct(ProductService $productServce)
+	function __construct(ProductService $productServce, ProductDealsService $dealService)
 	{
+		$this->dealService = $dealService;
 		$this->productServce = $productServce;
 	}
 
@@ -20,9 +22,29 @@ class BasketService
 	{
 		$basket = new Basket();
 		$this->fillBasket($basket, $productIds);
-		// $this->applyDeals($basket);
+		$this->dealService->applyDeals($basket);
 
 		return $basket;
+	}
+
+	public function getTotalRawPrice(Basket $basket)
+	{
+		return $this->calculatePrice($basket->getRawProducts());
+	}
+
+	public function getTotalPrice(Basket $basket)
+	{
+		return $this->calculatePrice($basket->getProducts());
+	}	
+
+	protected function calculatePrice($products)
+	{
+		$totalPrice = 0;
+		foreach ($products as $product) {
+			$totalPrice += $product->getPrice() * $product->getCount();
+		}
+
+		return $totalPrice;
 	}
 
 	protected function fillBasket(Basket $basket, array $productIds)
@@ -36,7 +58,7 @@ class BasketService
 				$product['price'],
 				$occurances[$product['id']]
 			);
-			$basket->add($bp);
+			$basket->addRaw($bp);
 		}
 	}
 }

@@ -22,6 +22,11 @@ class BasketProduct
 		$this->count = $count;
 	}
 
+	public function getCode()
+	{
+		return $this->code;
+	}
+
 	public function getName()
 	{
 		return $this->name;
@@ -36,4 +41,9 @@ class BasketProduct
 	{
 		return $this->count;
 	}
+
+	public function setCount(int $number)
+	{
+		$this->count = $number;
+	}	
 }
