@@ -5,11 +5,31 @@ namespace Tests\Feature;
 use App\Models\Product;
 use App\Models\Deal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_checkout_with_single_units()
+    {
+        $this->createSampleProducts();
+        $response = $this->postJson("/api/checkout", ['products' => [
+            ['id' => 2001],
+            ['id' => 2002],
+            ['id' => 2003],
+        ]]);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('products.0.count', 1)
+            ->assertJson([
+                'total_raw_price' => 600,
+                'total_price' => 600,
+                'total_discount' => 0,
+            ]);
+        self::assertEmpty($response['applied_deals']);
+    }
 
     public function test_checkout_without_deal()
     {
@@ -131,6 +151,27 @@ class CheckoutControllerTest extends TestCase
                 'total_discount' => 60,
             ]);
         self::assertCount(2, $response['applied_deals']);
+    }
+
+    public function test_checkout_validation_error()
+    {
+        $this->createSampleProducts();
+        $response = $this->postJson("/api/checkout", ['products' => [
+            ['id' => 2001],
+            ['price' => 2002], // has no id
+            ['id' => 2006], // id does not exist
+            ['id' => 'string'], // id is string
+            ['id' => 2003],
+        ]]);
+
+        $response->assertStatus(422)->assertJson(function (AssertableJson $json) use ($response) {
+            $json->has('products.1.id');
+            $json->has('products.2.id');
+            $json->has('products.3.id');
+        });
+        self::assertStringContainsString('required', $response['products.1.id'][0]);
+        self::assertStringContainsString('invalid', $response['products.2.id'][0]);
+        self::assertStringContainsString('number', $response['products.3.id'][0]);
     }
 
     protected function createSampleProducts()

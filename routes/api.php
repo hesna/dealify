@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Product\ProductShowController;
+use App\Http\Controllers\Product\ProductStoreController;
+use App\Http\Controllers\ProductDeal\ProductDealIndexController;
+use App\Http\Controllers\ProductDeal\ProductDealStoreController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductDealController;
+use App\Http\Controllers\Checkout\CheckoutController;
+use App\Http\Controllers\Product\ProductUpdateController;
+use App\Http\Controllers\ProductDeal\ProductDealDestroyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +20,10 @@ use App\Http\Controllers\ProductDealController;
 |
 */
 
-Route::apiResource('products', ProductController::class)->except(['index', 'destroy']);
-Route::apiResource('products.deals', ProductDealController::class)->only(['index', 'store']);
-Route::delete('products/{product}/deals', [ProductDealController::class, 'destroy']);
+Route::post('products', ProductStoreController::class);
+Route::get('products/{product}', ProductShowController::class);
+Route::put('products/{product}', ProductUpdateController::class);
 Route::post('checkout', CheckoutController::class);
+Route::get('products/{product}/deals', ProductDealIndexController::class);
+Route::post('products/{product}/deals', ProductDealStoreController::class);
+Route::delete('products/{product}/deals', ProductDealDestroyController::class);

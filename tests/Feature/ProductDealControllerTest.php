@@ -65,6 +65,11 @@ class ProductDealControllerTest extends TestCase
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('deals.0.number_of_products')->has('deals.0.price');
         });
+    }
+
+    public function test_set_product_deals_duplicate_number_error()
+    {
+        $product = Product::create(['name' => 'new product', 'price' => 200]);
 
         // there can't be two deals for same amount of products
         $response = $this->postJson("/api/products/$product->id/deals", ['deals' => [

@@ -24,18 +24,16 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-    public function test_create_product_validation_error()
+    public function test_create_product_name_required_error()
     {
         $response = $this->post('/api/products', ['price' => 200]);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('name');
         });
+    }
 
-        $response = $this->post('/api/products', ['name' => 'shiny new product']);
-        $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
-            $json->has('price');
-        });
-
+    public function test_create_product_price_toobig_error()
+    {
         $response = $this->post('/api/products', [
             'name' => 'shiny new product',
             'price' => 20000,
@@ -60,20 +58,18 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-    public function test_update_product_validation_error()
+    public function test_update_product_price_required_error()
     {
         $product = Product::create(['name' => 'new product', 'price' => 200]);
-
-        $response = $this->put("/api/products/$product->id", ['price' => 200]);
-        $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
-            $json->has('name');
-        });
-
         $response = $this->put("/api/products/$product->id", ['name' => 'shiny new name']);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('price');
         });
+    }
 
+    public function test_update_product_price_toobig_error()
+    {
+        $product = Product::create(['name' => 'new product', 'price' => 200]);
         $response = $this->put("/api/products/$product->id", [
             'name' => 'shiny new name',
             'price' => 20000,
