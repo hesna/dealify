@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,15 +16,20 @@ class ProductStoreController
      * @var Request
      */
     private $request;
+    /**
+     * @var ProductService
+     */
+    private $productService;
 
     /**
      * ProductStoreController constructor.
      * @param Request $request
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, ProductService $productService)
     {
         $this->request = $request;
+        $this->productService = $productService;
     }
 
     /**
@@ -37,7 +43,10 @@ class ProductStoreController
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return response()->json(Product::create($this->request->all()), Response::HTTP_CREATED);
+        return response()->json(
+            $this->productService->createProduct($this->request->all()),
+            Response::HTTP_CREATED
+        );
     }
 
     /**

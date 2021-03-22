@@ -22,4 +22,16 @@ interface ProductDealsServiceInterface
      * @return void
      */
     public function applyDeals(Basket $basket) : void;
+
+    /**
+     * @param Product $product
+     * @return int number of deleted deals
+     */
+    public function deleteProductDeals(Product $product): int;
+
+    /**
+     * @param Product $product
+     * @return mixed
+     */
+    public function getProductDeals(Product $product);
 }

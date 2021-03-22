@@ -28,6 +28,24 @@ class ProductDealsService implements ProductDealsServiceInterface
     }
 
     /**
+     * @param Product $product
+     * @return int number of deleted deals
+     */
+    public function deleteProductDeals(Product $product): int
+    {
+        return Deal::where('product_id', $product->id)->delete();
+    }
+
+    /**
+     * @param Product $product
+     * @return mixed
+     */
+    public function getProductDeals(Product $product)
+    {
+        return $product->deals;
+    }
+
+    /**
      * @param Basket $basket
      */
     public function applyDeals(Basket $basket) : void

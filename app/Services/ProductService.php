@@ -16,4 +16,23 @@ class ProductService implements ProductServiceInterface
 
         return $products->toArray();
     }
+
+    /**
+     * @param array $fields
+     * @return Product
+     */
+    public function createProduct(array $fields): Product
+    {
+        return Product::create($fields);
+    }
+
+    /**
+     * @param Product $product
+     * @param array $fields
+     * @return bool
+     */
+    public function updateProduct(Product $product, array $fields): bool
+    {
+        return $product->update($fields);
+    }
 }
