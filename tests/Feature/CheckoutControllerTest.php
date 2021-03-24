@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Product;
 use App\Models\Deal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
@@ -164,14 +163,10 @@ class CheckoutControllerTest extends TestCase
             ['id' => 2003],
         ]]);
 
-        $response->assertStatus(422)->assertJson(function (AssertableJson $json) use ($response) {
-            $json->has('products.1.id');
-            $json->has('products.2.id');
-            $json->has('products.3.id');
-        });
-        self::assertStringContainsString('required', $response['products.1.id'][0]);
-        self::assertStringContainsString('invalid', $response['products.2.id'][0]);
-        self::assertStringContainsString('number', $response['products.3.id'][0]);
+        $response->assertStatus(422);
+        self::assertStringContainsString('required', $response['errors']['products.1.id'][0]);
+        self::assertStringContainsString('invalid', $response['errors']['products.2.id'][0]);
+        self::assertStringContainsString('number', $response['errors']['products.3.id'][0]);
     }
 
     protected function createSampleProducts()

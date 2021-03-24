@@ -15,7 +15,7 @@ class ProductDealControllerTest extends TestCase
     {
         $this->seed();
         $product = Product::first();
-        $response = $this->get("/api/products/$product->id/deals");
+        $response = $this->getJson("/api/products/$product->id/deals");
         $response->assertStatus(200);
         self::assertEquals($response[0]['product_id'], $product->id);
     }
@@ -24,7 +24,7 @@ class ProductDealControllerTest extends TestCase
     {
         $this->seed();
         $product = Product::first();
-        $response = $this->delete("/api/products/$product->id/deals");
+        $response = $this->deleteJson("/api/products/$product->id/deals");
         $response->assertStatus(204);
         $this->assertDatabaseMissing('deals', ['product_id' => $product->id]);
     }
