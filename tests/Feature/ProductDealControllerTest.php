@@ -58,13 +58,12 @@ class ProductDealControllerTest extends TestCase
 
         // price is required and number_of_products should be greater than 1
         $response = $this->postJson("/api/products/$product->id/deals", ['deals' => [
-            [
-                'number_of_products' => 1
-            ]
+            ['number_of_products' => 1]
         ]]);
-        $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
-            $json->has('deals.0.number_of_products')->has('deals.0.price');
-        });
+
+        $response->assertStatus(422);
+        self::assertStringContainsString('required', $response['errors']['deals.0.price'][0]);
+        self::assertStringContainsString('between', $response['errors']['deals.0.number_of_products'][0]);
     }
 
     public function test_set_product_deals_duplicate_number_error()
@@ -83,7 +82,7 @@ class ProductDealControllerTest extends TestCase
             ],
         ]]);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
-            $json->has('deals');
+            $json->has('errors.deals');
         });
     }
 }
