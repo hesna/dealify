@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductController extends Controller
+/**
+ * Class ProductController
+ * @package App\Http\Controllers
+ */
+class ProductController
 {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        if (($validator = $this->productRequestValidator($request))->fails()){
+        if (($validator = $this->productRequestValidator($request))->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -27,32 +33,36 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
-        return $product;
+        return response()->json($product);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product): JsonResponse
     {
-        if (($validator = $this->productRequestValidator($request))->fails()){
+        if (($validator = $this->productRequestValidator($request))->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $product->update($request->all());
 
-        return $product;
+        return response()->json($product);
     }
 
-    protected function productRequestValidator(Request $request)
+    /**
+     * @param Request $request
+     * @return ValidatorContract
+     */
+    protected function productRequestValidator(Request $request): ValidatorContract
     {
         return Validator::make($request->all(), [
             'name' => 'required|max:255',

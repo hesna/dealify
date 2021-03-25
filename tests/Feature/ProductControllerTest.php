@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -35,16 +34,16 @@ class ProductControllerTest extends TestCase
         $response = $this->post('/api/products', ['name' => 'shiny new product']);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('price');
-        });       
+        });
 
         $response = $this->post('/api/products', [
             'name' => 'shiny new product',
             'price' => 20000,
-        ]);         
+        ]);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('price');
-        });               
-    }    
+        });
+    }
 
     public function test_update_product_success()
     {
@@ -73,15 +72,15 @@ class ProductControllerTest extends TestCase
         $response = $this->put("/api/products/$product->id", ['name' => 'shiny new name']);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('price');
-        });       
+        });
 
         $response = $this->put("/api/products/$product->id", [
             'name' => 'shiny new name',
             'price' => 20000,
-        ]);         
+        ]);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('price');
-        });               
+        });
     }
 
     public function test_get_product()
@@ -94,5 +93,5 @@ class ProductControllerTest extends TestCase
             'name' => 'new product',
             'price' => 200,
         ]);
-    }    
+    }
 }

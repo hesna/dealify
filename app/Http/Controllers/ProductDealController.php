@@ -5,32 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Deal;
 use App\Models\Product;
 use App\Contracts\ProductDealsServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\MessageBag;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Arr;
 
-class ProductDealController extends Controller
+/**
+ * Class ProductDealController
+ * @package App\Http\Controllers
+ */
+class ProductDealController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function index(Product $product)
+    public function index(Product $product): JsonResponse
     {
-        return $product->deals;
+        return response()->json($product->deals);
     }
 
     /**
      * resets all deals of a product each time called
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @param Request $request
+     * @param ProductDealsServiceInterface $pdService
+     * @return JsonResponse
      */
-    public function store(Product $product, Request $request, ProductDealsServiceInterface $pdService)
+    public function store(Product $product, Request $request, ProductDealsServiceInterface $pdService): JsonResponse
     {
-        if (!empty($errors = $this->getDealsRequestErrors($request))){
+        if (!empty($errors = $this->getDealsRequestErrors($request))) {
             return response()->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         $pdService->setProductDeals($product, $request->get('deals'));
@@ -41,15 +50,20 @@ class ProductDealController extends Controller
     /**
      * destroys all deals of a product
      *
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
         Deal::where('product_id', $product->id)->delete();
 
-        return response()->json(null, Response::HTTP_NO_CONTENT); 
-    }    
+        return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
 
+    /**
+     * @param Request $request
+     * @return array|MessageBag|string[][]
+     */
     protected function getDealsRequestErrors(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,10 +76,10 @@ class ProductDealController extends Controller
         }
 
         $numbers = Arr::pluck($request->get('deals'), 'number_of_products');
-        if (count($numbers) != count(array_unique($numbers))) {
+        if (count($numbers) !== count(array_unique($numbers))) {
             return ["deals" => ["the value of number_of_products must be unique within the given input."]];
         }
 
         return [];
-    }    
+    }
 }

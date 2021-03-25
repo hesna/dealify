@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -18,7 +17,7 @@ class ProductDealControllerTest extends TestCase
         $product = Product::first();
         $response = $this->get("/api/products/$product->id/deals");
         $response->assertStatus(200);
-        $this->assertTrue($response[0]['product_id'] == $product->id);
+        self::assertEquals($response[0]['product_id'], $product->id);
     }
 
     public function test_delete_product_deals()
@@ -33,11 +32,11 @@ class ProductDealControllerTest extends TestCase
     public function test_set_product_deals_success()
     {
         $product = Product::create(['name' => 'new product', 'price' => 200]);
-        $response = $this->postJson("/api/products/$product->id/deals",['deals' => [
+        $response = $this->postJson("/api/products/$product->id/deals", ['deals' => [
             [
                 'number_of_products' => 3,
                 'price' => 550,
-            ],            
+            ],
             [
                 'number_of_products' => 5,
                 'price' => 900,
@@ -50,7 +49,7 @@ class ProductDealControllerTest extends TestCase
         $response->assertStatus(201)->assertJson(function (AssertableJson $json) {
             $json->has(2);
         });
-        $this->assertTrue($response[1]['unit_price'] == 180);
+        self::assertEquals(180, $response[1]['unit_price']);
     }
 
     public function test_set_product_deals_validation_error()
@@ -58,7 +57,7 @@ class ProductDealControllerTest extends TestCase
         $product = Product::create(['name' => 'new product', 'price' => 200]);
 
         // price is required and number_of_products should be greater than 1
-        $response = $this->postJson("/api/products/$product->id/deals",['deals' => [
+        $response = $this->postJson("/api/products/$product->id/deals", ['deals' => [
             [
                 'number_of_products' => 1
             ]
@@ -68,11 +67,11 @@ class ProductDealControllerTest extends TestCase
         });
 
         // there can't be two deals for same amount of products
-        $response = $this->postJson("/api/products/$product->id/deals",['deals' => [
+        $response = $this->postJson("/api/products/$product->id/deals", ['deals' => [
             [
                 'number_of_products' => 5,
                 'price' => 550,
-            ],            
+            ],
             [
                 'number_of_products' => 5,
                 'price' => 900,
@@ -80,6 +79,6 @@ class ProductDealControllerTest extends TestCase
         ]]);
         $response->assertStatus(422)->assertJson(function (AssertableJson $json) {
             $json->has('deals');
-        });        
+        });
     }
 }

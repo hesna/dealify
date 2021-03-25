@@ -9,41 +9,81 @@ use App\Models\Product;
  */
 class BasketProduct
 {
-	protected $code;
-	protected $name;
-	protected $price;
-	protected $count;
+    /**
+     * @var string
+     */
+    protected $code;
 
-	function __construct($code, $name, $price, $count)
-	{
-		$this->code = $code;
-		$this->name = $name;
-		$this->price = $price;
-		$this->count = $count;
-	}
+    /**
+     * @var string
+     */
+    protected $name;
 
-	public function getCode()
-	{
-		return $this->code;
-	}
+    /**
+     * @var integer
+     */
+    protected $price;
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @var integer
+     */
+    protected $count;
 
-	public function getPrice()
-	{
-		return $this->price;
-	}	
+    /**
+     * BasketProduct constructor.
+     *
+     * @param $code
+     * @param $name
+     * @param $price
+     * @param $count
+     *
+     * @return void
+     */
+    public function __construct($code, $name, $price, $count)
+    {
+        $this->code = $code;
+        $this->name = $name;
+        $this->price = $price;
+        $this->count = $count;
+    }
 
-	public function getCount()
-	{
-		return $this->count;
-	}
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
 
-	public function setCount(int $number)
-	{
-		$this->count = $number;
-	}	
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->count;
+    }
+
+    /**
+     * @param int $number
+     */
+    public function setCount(int $number): void
+    {
+        $this->count = $number;
+    }
 }

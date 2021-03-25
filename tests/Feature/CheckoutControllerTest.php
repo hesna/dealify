@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Product;
 use App\Models\Deal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
@@ -15,7 +14,7 @@ class CheckoutControllerTest extends TestCase
     public function test_checkout_without_deal()
     {
         $this->createSampleProducts();
-        $response = $this->postJson("/api/checkout",['products' => [
+        $response = $this->postJson("/api/checkout", ['products' => [
             ['id' => 2001],
             ['id' => 2002],
             ['id' => 2003],
@@ -31,7 +30,7 @@ class CheckoutControllerTest extends TestCase
                 'total_price' => 1300,
                 'total_discount' => 0,
             ]);
-        $this->assertTrue(empty($response['applied_deals']));
+        self::assertEmpty($response['applied_deals']);
     }
 
     public function test_checkout_with_single_deal()
@@ -40,7 +39,7 @@ class CheckoutControllerTest extends TestCase
         $product = Product::create(['name' => 'product4', 'price' => 50]);
         $product->deals()->save(Deal::make(['number_of_products' => 3, 'price' => 130]));
 
-        $response = $this->postJson("/api/checkout",['products' => [
+        $response = $this->postJson("/api/checkout", ['products' => [
             ['id' => $product->id],
             ['id' => $product->id],
             ['id' => $product->id],
@@ -58,8 +57,8 @@ class CheckoutControllerTest extends TestCase
                 'total_price' => 880,
                 'total_discount' => 20,
             ]);
-        $this->assertTrue(count($response['applied_deals']) == 1);
-    } 
+        self::assertCount(1, $response['applied_deals']);
+    }
 
     public function test_checkout_with_multiple_deals()
     {
@@ -67,9 +66,9 @@ class CheckoutControllerTest extends TestCase
         $product4 = Product::create(['name' => 'product4', 'price' => 50]);
         $product4->deals()->save(Deal::make(['number_of_products' => 3, 'price' => 130]));
         $product5 = Product::create(['name' => 'product5', 'price' => 80]);
-        $product5->deals()->save(Deal::make(['number_of_products' => 2, 'price' => 150]));        
+        $product5->deals()->save(Deal::make(['number_of_products' => 2, 'price' => 150]));
 
-        $response = $this->postJson("/api/checkout",['products' => [
+        $response = $this->postJson("/api/checkout", ['products' => [
             ['id' => $product4->id],
             ['id' => $product4->id],
             ['id' => 2001],
@@ -91,8 +90,8 @@ class CheckoutControllerTest extends TestCase
                 'total_price' => 1030,
                 'total_discount' => 30,
             ]);
-        $this->assertTrue(count($response['applied_deals']) == 2);
-    }     
+        self::assertCount(2, $response['applied_deals']);
+    }
 
     public function test_checkout_with_samename_deals()
     {
@@ -105,7 +104,7 @@ class CheckoutControllerTest extends TestCase
             Deal::make(['number_of_products' => 10, 'price' => 350]),
         ]);
 
-        $response = $this->postJson("/api/checkout",['products' => [
+        $response = $this->postJson("/api/checkout", ['products' => [
             ['id' => $product->id],
             ['id' => $product->id],
             ['id' => 2002],
@@ -131,8 +130,8 @@ class CheckoutControllerTest extends TestCase
                 'total_price' => 1390,
                 'total_discount' => 60,
             ]);
-        $this->assertTrue(count($response['applied_deals']) == 2);
-    } 
+        self::assertCount(2, $response['applied_deals']);
+    }
 
     protected function createSampleProducts()
     {
@@ -141,5 +140,5 @@ class CheckoutControllerTest extends TestCase
             ['id' => 2002, 'name' => 'product2', 'price' => 200],
             ['id' => 2003, 'name' => 'product3', 'price' => 300],
         ]);
-    }   
+    }
 }

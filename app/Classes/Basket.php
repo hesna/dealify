@@ -2,65 +2,95 @@
 namespace App\Classes;
 
 /**
- * holds data of the current checkedout basket
+ * holds data of the current checked-out basket
  */
 class Basket
 {
-	/**
-	 * @var array of BasketProducts
-	 */
-	protected $products = [];
 
-	/**
-	 * plain list of checkedout products
-	 * @var array of ids
-	 */
-	protected $rawProducts = [];
+    /**
+     * @var array of BasketProducts
+     */
+    protected $products = [];
 
-	/**
-	 * @var array of Deals
-	 */
-	protected $appliedDeals = [];
+    /**
+     * plain list of checked-out products
+     *
+     * @var array of ids
+     */
+    protected $rawProducts = [];
 
-	public function getProducts()
-	{
-		return $this->products;
-	}
+    /**
+     * @var array of Deals
+     */
+    protected $appliedDeals = [];
 
-	public function getAppliedDeals()
-	{
-		return $this->appliedDeals;
-	}	
 
-	public function getRawProducts()
-	{
-		return $this->rawProducts;
-	}	
+    /**
+     * @return array
+     */
+    public function getProducts(): array
+    {
+        return $this->products;
+    }
 
-	public function getRawProductCodes()
-	{
-		$codes = [];
-		foreach ($this->rawProducts as $product) {
-			for ($i=0; $i < $product->getCount(); $i++) { 
-				$codes[] = $product->getCode();
-			}
-		}
 
-		return $codes;
-	}		
+    /**
+     * @return array
+     */
+    public function getAppliedDeals(): array
+    {
+        return $this->appliedDeals;
+    }
 
-	public function add(BasketProduct $bp)
-	{
-		$this->products[] = $bp;
-	}
 
-	public function addRaw(BasketProduct $bp)
-	{
-		$this->rawProducts[] = $bp;
-	}
+    /**
+     * @return array
+     */
+    public function getRawProducts(): array
+    {
+        return $this->rawProducts;
+    }
 
-	public function addAppliedDeal($deal)
-	{
-		$this->appliedDeals[] = $deal;
-	}
+
+    /**
+     * @return array
+     */
+    public function getRawProductCodes(): array
+    {
+        $codes = [];
+        foreach ($this->rawProducts as $product) {
+            for ($i = 0; $i < $product->getCount(); $i++) {
+                $codes[] = $product->getCode();
+            }
+        }
+
+        return $codes;
+    }
+
+
+    /**
+     * @param BasketProduct $bp
+     */
+    public function add(BasketProduct $bp): void
+    {
+        $this->products[] = $bp;
+    }
+
+
+    /**
+     * @param BasketProduct $bp
+     */
+    public function addRaw(BasketProduct $bp): void
+    {
+        $this->rawProducts[] = $bp;
+    }
+
+
+    /**
+     * @param $deal
+     */
+    public function addAppliedDeal($deal): void
+    {
+        $this->appliedDeals[] = $deal;
+    }
 }
