@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Checkout;
 
 use App\Contracts\BasketServiceInterface;
 use App\Contracts\BasketFormatterServiceInterface;
+use App\Http\Requests\CheckoutRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 
 /**
  * Class CheckoutController
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 class CheckoutController
 {
     /**
-     * @var Request
+     * @var CheckoutRequest
      */
     private $request;
     /**
@@ -29,13 +29,13 @@ class CheckoutController
 
     /**
      * CheckoutController constructor.
-     * @param Request $request
+     * @param CheckoutRequest $request
      * @param BasketServiceInterface $basketService
      * @param BasketFormatterServiceInterface $basketFormatter
      * @return void
      */
     public function __construct(
-        Request $request,
+        CheckoutRequest $request,
         BasketServiceInterface $basketService,
         BasketFormatterServiceInterface $basketFormatter
     ) {
@@ -52,10 +52,7 @@ class CheckoutController
      */
     public function __invoke(): JsonResponse
     {
-        $validated = $this->request->validate([
-            'products' => 'required|array',
-            'products.*.id' => 'required|numeric|exists:products',
-        ]);
+        $validated = $this->request->validated();
         $basket = $this->basketService->checkout(Arr::pluck($validated['products'], 'id'));
 
         return response()->json($this->basketFormatter->toFriendlyArray($basket));

@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Requests\StoreUpdateProductRequest;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class ProductStoreController
+ * @package App\Http\Controllers\Product
+ */
 class ProductStoreController
 {
     /**
-     * @var Request
+     * @var StoreUpdateProductRequest
      */
     private $request;
     /**
@@ -20,11 +24,11 @@ class ProductStoreController
 
     /**
      * ProductStoreController constructor.
-     * @param Request $request
+     * @param StoreUpdateProductRequest $request
      * @param ProductService $productService
      * @return void
      */
-    public function __construct(Request $request, ProductService $productService)
+    public function __construct(StoreUpdateProductRequest $request, ProductService $productService)
     {
         $this->request = $request;
         $this->productService = $productService;
@@ -37,14 +41,8 @@ class ProductStoreController
      */
     public function __invoke(): JsonResponse
     {
-        $validated = $this->request->validate([
-            'name' => 'required|max:255',
-            'price' => 'required|numeric|between:10,500',
-        ]);
+        $product = $this->productService->createProduct($this->request->validated());
 
-        return response()->json(
-            $this->productService->createProduct($validated),
-            Response::HTTP_CREATED
-        );
+        return response()->json($product, Response::HTTP_CREATED);
     }
 }

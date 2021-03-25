@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Requests\StoreUpdateProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class ProductUpdateController
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class ProductUpdateController
 {
     /**
-     * @var Request
+     * @var StoreUpdateProductRequest
      */
     private $request;
     /**
@@ -24,11 +24,11 @@ class ProductUpdateController
 
     /**
      * ProductUpdateController constructor.
-     * @param Request $request
+     * @param StoreUpdateProductRequest $request
      * @param ProductService $productService
      * @return void
      */
-    public function __construct(Request $request, ProductService $productService)
+    public function __construct(StoreUpdateProductRequest $request, ProductService $productService)
     {
         $this->request = $request;
         $this->productService = $productService;
@@ -42,11 +42,7 @@ class ProductUpdateController
      */
     public function __invoke(Product $product): JsonResponse
     {
-        $validated = $this->request->validate([
-            'name' => 'required|max:255',
-            'price' => 'required|numeric|between:10,500',
-        ]);
-        $this->productService->updateProduct($product, $validated);
+        $this->productService->updateProduct($product, $this->request->validated());
 
         return response()->json($product);
     }
