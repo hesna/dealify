@@ -13,7 +13,7 @@ interface ProductServiceInterface
      * @param  array of product ids
      * @return array of product arrays
      */
-    public function getProductsByIds(array $ids): array;
+    public function getProductsArrayByIds(array $ids, array $fields): array;
 
     /**
      * @param Product $product

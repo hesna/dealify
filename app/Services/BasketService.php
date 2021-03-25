@@ -84,7 +84,7 @@ class BasketService implements BasketServiceInterface
      */
     protected function fillBasket(Basket $basket, array $productIds): void
     {
-        $products = $this->productService->getProductsByIds($productIds);
+        $products = $this->productService->getProductsArrayByIds($productIds, ['id', 'name', 'price']);
         $occurrences = array_count_values($productIds);
         foreach ($products as $product) {
             $bp = new BasketProduct(

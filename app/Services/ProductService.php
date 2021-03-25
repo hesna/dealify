@@ -8,13 +8,12 @@ class ProductService implements ProductServiceInterface
 {
     /**
      * @param array $ids
+     * @param array $fields
      * @return array
      */
-    public function getProductsByIds(array $ids) : array
+    public function getProductsArrayByIds(array $ids, array $fields) : array
     {
-        $products = Product::select(['id', 'name', 'price'])->whereIn('id', $ids)->get();
-
-        return $products->toArray();
+        return Product::select($fields)->whereIn('id', $ids)->get()->toArray();
     }
 
     /**
