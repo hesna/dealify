@@ -55,7 +55,7 @@ class BasketApiFormatterService implements BasketFormatterServiceInterface
             $output[] = [
                 'code' => $product->getCode(),
                 'name' => $product->getName(),
-                'price' => $product->getPrice(),
+                'unit-price' => $product->getPrice(),
                 'count' => $product->getCount(),
             ];
         }
