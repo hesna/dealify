@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\ProductDeal;
 
+use App\Contracts\ProductDealsServiceInterface;
 use App\Models\Product;
-use App\Services\ProductDealsService;
-use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 /**
  * Class ProductDealDestroyController
@@ -14,16 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductDealDestroyController
 {
     /**
-     * @var ProductDealsService
+     * @var ProductDealsServiceInterface
      */
-    private $productDealsService;
+    private ProductDealsServiceInterface $productDealsService;
 
     /**
      * ProductDealDestroyController constructor.
-     * @param ProductDealsService $productDealsService
+     * @param ProductDealsServiceInterface $productDealsService
      * @return void
      */
-    public function __construct(ProductDealsService $productDealsService)
+    public function __construct(ProductDealsServiceInterface $productDealsService)
     {
         $this->productDealsService = $productDealsService;
     }
@@ -32,12 +31,12 @@ class ProductDealDestroyController
      * destroys all deals of a product
      *
      * @param Product $product
-     * @return JsonResponse
+     * @return Response
      */
-    public function __invoke(Product $product): JsonResponse
+    public function __invoke(Product $product): Response
     {
         $this->productDealsService->deleteProductDeals($product);
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 }

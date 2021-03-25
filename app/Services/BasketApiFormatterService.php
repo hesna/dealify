@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Classes\Basket;
 use App\Contracts\BasketFormatterServiceInterface;
+use App\Contracts\BasketServiceInterface;
 
 /**
  * Class BasketApiFormatterService
@@ -11,16 +12,16 @@ use App\Contracts\BasketFormatterServiceInterface;
 class BasketApiFormatterService implements BasketFormatterServiceInterface
 {
     /**
-     * @var BasketService
+     * @var BasketServiceInterface
      */
-    protected $basketService;
+    protected BasketServiceInterface $basketService;
 
     /**
      * BasketApiFormatterService constructor.
-     * @param BasketService $basketService
+     * @param BasketServiceInterface $basketService
      * @return void
      */
-    public function __construct(BasketService $basketService)
+    public function __construct(BasketServiceInterface $basketService)
     {
         $this->basketService = $basketService;
     }

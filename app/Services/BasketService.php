@@ -15,11 +15,11 @@ class BasketService implements BasketServiceInterface
     /**
      * @var ProductDealsServiceInterface
      */
-    protected $dealService;
+    protected ProductDealsServiceInterface $dealService;
     /**
      * @var ProductServiceInterface
      */
-    protected $productService;
+    protected ProductServiceInterface $productService;
 
     /**
      * BasketService constructor.

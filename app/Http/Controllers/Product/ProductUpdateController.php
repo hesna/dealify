@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Contracts\ProductServiceInterface;
 use App\Http\Requests\StoreUpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Services\ProductService;
-use Illuminate\Http\JsonResponse;
 
 /**
  * Class ProductUpdateController
@@ -16,19 +16,19 @@ class ProductUpdateController
     /**
      * @var StoreUpdateProductRequest
      */
-    private $request;
+    private StoreUpdateProductRequest $request;
     /**
-     * @var ProductService
+     * @var ProductServiceInterface
      */
-    private $productService;
+    private ProductServiceInterface $productService;
 
     /**
      * ProductUpdateController constructor.
      * @param StoreUpdateProductRequest $request
-     * @param ProductService $productService
+     * @param ProductServiceInterface $productService
      * @return void
      */
-    public function __construct(StoreUpdateProductRequest $request, ProductService $productService)
+    public function __construct(StoreUpdateProductRequest $request, ProductServiceInterface $productService)
     {
         $this->request = $request;
         $this->productService = $productService;
@@ -38,12 +38,12 @@ class ProductUpdateController
      * Update the specified resource in storage.
      *
      * @param Product $product
-     * @return JsonResponse
+     * @return ProductResource
      */
-    public function __invoke(Product $product): JsonResponse
+    public function __invoke(Product $product): ProductResource
     {
         $this->productService->updateProduct($product, $this->request->validated());
 
-        return response()->json($product);
+        return ProductResource::make($product);
     }
 }

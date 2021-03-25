@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ProductDeal;
 
 use App\Contracts\ProductDealsServiceInterface;
 use App\Http\Requests\StoreProductDealRequest;
+use App\Http\Resources\ProductDealResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,11 @@ class ProductDealStoreController
     /**
      * @var StoreProductDealRequest
      */
-    private $request;
+    private StoreProductDealRequest $request;
     /**
      * @var ProductDealsServiceInterface
      */
-    private $pdService;
+    private ProductDealsServiceInterface $pdService;
 
     /**
      * ProductDealStoreController constructor.
@@ -43,6 +44,7 @@ class ProductDealStoreController
         $validated = $this->request->validated();
         $this->pdService->setProductDeals($product, $validated['deals']);
 
-        return response()->json($product->deals, Response::HTTP_CREATED);
+        return ProductDealResource::collection($product->deals)
+            ->response()->setStatusCode(Response::HTTP_CREATED);
     }
 }

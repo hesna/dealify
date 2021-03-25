@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\JsonResponse;
 
 class ProductShowController
 {
@@ -12,10 +12,10 @@ class ProductShowController
      * Display the specified resource.
      *
      * @param Product $product
-     * @return JsonResponse
+     * @return ProductResource
      */
-    public function __invoke(Product $product): JsonResponse
+    public function __invoke(Product $product): ProductResource
     {
-        return response()->json($product);
+        return ProductResource::make($product);
     }
 }

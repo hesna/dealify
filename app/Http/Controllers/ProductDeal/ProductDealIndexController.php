@@ -1,23 +1,24 @@
 <?php
 namespace App\Http\Controllers\ProductDeal;
 
+use App\Contracts\ProductDealsServiceInterface;
+use App\Http\Resources\ProductDealResource;
 use App\Models\Product;
-use App\Services\ProductDealsService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductDealIndexController
 {
     /**
-     * @var ProductDealsService
+     * @var ProductDealsServiceInterface
      */
-    private $productDealsService;
+    private ProductDealsServiceInterface $productDealsService;
 
     /**
      * ProductDealDestroyController constructor.
-     * @param ProductDealsService $productDealsService
+     * @param ProductDealsServiceInterface $productDealsService
      * @return void
      */
-    public function __construct(ProductDealsService $productDealsService)
+    public function __construct(ProductDealsServiceInterface $productDealsService)
     {
         $this->productDealsService = $productDealsService;
     }
@@ -26,10 +27,12 @@ class ProductDealIndexController
      * Display a listing of the resource.
      *
      * @param Product $product
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function __invoke(Product $product): JsonResponse
+    public function __invoke(Product $product): AnonymousResourceCollection
     {
-        return response()->json($this->productDealsService->getProductDeals($product));
+        $deals = $this->productDealsService->getProductDeals($product);
+
+        return ProductDealResource::collection($deals);
     }
 }

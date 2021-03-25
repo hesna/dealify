@@ -16,8 +16,10 @@ class ProductDealControllerTest extends TestCase
         $this->seed();
         $product = Product::first();
         $response = $this->getJson("/api/products/$product->id/deals");
-        $response->assertStatus(200);
-        self::assertEquals($response[0]['product_id'], $product->id);
+        $response->assertStatus(200)->assertJson(function (AssertableJson $json) use ($product) {
+            $json->has('data.0.id');
+            $json->where('data.0.product_id', $product->id);
+        });
     }
 
     public function test_delete_product_deals()
@@ -47,9 +49,11 @@ class ProductDealControllerTest extends TestCase
             ]
         ]]);
         $response->assertStatus(201)->assertJson(function (AssertableJson $json) {
-            $json->has(2);
+            $json->has('data.2')
+                ->where('data.0.number_of_products', 3)
+                ->where('data.1.price', 900)
+                ->where('data.1.unit_price', 180);
         });
-        self::assertEquals(180, $response[1]['unit_price']);
     }
 
     public function test_set_product_deals_validation_error()

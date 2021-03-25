@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Contracts\ProductServiceInterface;
 use App\Http\Requests\StoreUpdateProductRequest;
-use App\Services\ProductService;
-use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\ProductResource;
 
 /**
  * Class ProductStoreController
@@ -16,19 +15,19 @@ class ProductStoreController
     /**
      * @var StoreUpdateProductRequest
      */
-    private $request;
+    private StoreUpdateProductRequest $request;
     /**
-     * @var ProductService
+     * @var ProductServiceInterface
      */
-    private $productService;
+    private ProductServiceInterface $productService;
 
     /**
      * ProductStoreController constructor.
      * @param StoreUpdateProductRequest $request
-     * @param ProductService $productService
+     * @param ProductServiceInterface $productService
      * @return void
      */
-    public function __construct(StoreUpdateProductRequest $request, ProductService $productService)
+    public function __construct(StoreUpdateProductRequest $request, ProductServiceInterface $productService)
     {
         $this->request = $request;
         $this->productService = $productService;
@@ -37,12 +36,12 @@ class ProductStoreController
     /**
      * Store a newly created resource in storage.
      *
-     * @return JsonResponse
+     * @return ProductResource
      */
-    public function __invoke(): JsonResponse
+    public function __invoke(): ProductResource
     {
         $product = $this->productService->createProduct($this->request->validated());
 
-        return response()->json($product, Response::HTTP_CREATED);
+        return ProductResource::make($product);
     }
 }
