@@ -17,15 +17,15 @@ class CheckoutController
     /**
      * @var CheckoutRequest
      */
-    private $request;
+    private CheckoutRequest $request;
     /**
      * @var BasketServiceInterface
      */
-    private $basketService;
+    private BasketServiceInterface $basketService;
     /**
      * @var BasketFormatterServiceInterface
      */
-    private $basketFormatter;
+    private BasketFormatterServiceInterface $basketFormatter;
 
     /**
      * CheckoutController constructor.
@@ -43,7 +43,6 @@ class CheckoutController
         $this->basketService = $basketService;
         $this->basketFormatter = $basketFormatter;
     }
-
 
     /**
      * Creates a basket and calculates the price

@@ -11,19 +11,19 @@ interface BasketServiceInterface
 {
     /**
      * @param array $productIds
-     * @return mixed
+     * @return Basket
      */
-    public function checkout(array $productIds);
+    public function checkout(array $productIds): Basket;
 
     /**
      * @param Basket $basket
-     * @return mixed
+     * @return float|int
      */
-    public function getTotalRawPrice(Basket $basket);
+    public function getTotalRawPrice(Basket $basket): float|int;
 
     /**
      * @param Basket $basket
-     * @return mixed
+     * @return float|int
      */
-    public function getTotalPrice(Basket $basket);
+    public function getTotalPrice(Basket $basket): float|int;
 }

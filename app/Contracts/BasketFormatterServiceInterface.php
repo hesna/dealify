@@ -11,7 +11,7 @@ interface BasketFormatterServiceInterface
 {
     /**
      * @param Basket $basket
-     * @return mixed
+     * @return array
      */
-    public function toFriendlyArray(Basket $basket);
+    public function toFriendlyArray(Basket $basket): array;
 }

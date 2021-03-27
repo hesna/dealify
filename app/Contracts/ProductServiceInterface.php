@@ -10,7 +10,8 @@ use App\Models\Product;
 interface ProductServiceInterface
 {
     /**
-     * @param  array of product ids
+     * @param array $ids
+     * @param array $fields
      * @return array of product arrays
      */
     public function getProductsArrayByIds(array $ids, array $fields): array;

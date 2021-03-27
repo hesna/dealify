@@ -40,24 +40,57 @@ class ProductDealsService implements ProductDealsServiceInterface
      * @param Product $product
      * @return mixed
      */
-    public function getProductDeals(Product $product)
+    public function getProductDeals(Product $product): mixed
     {
         return $product->deals;
     }
 
     /**
+     * this method only loads deals that are applicable to given products
+     * that's how we deal with thousands of deals!
+     *
      * @param Basket $basket
+     * @return array of deals
      */
-    public function applyDeals(Basket $basket) : void
+    public function getBasketApplicableDeals(Basket $basket): array
     {
-        $relatedDeals = $this->getRelatedDeals($basket);
+        $deals = [];
 
+        // we only care about products that are at least two of them in basket
+        $dealables = array_filter(array_count_values($basket->getRawProductCodes()), static function ($value) {
+            return $value > 1;
+        });
+        if (empty($dealables)) {
+            return [];
+        }
+
+        // we only load deals that are applicable to the number of each product we have!
+        $query = Deal::select(['id', 'product_id', 'number_of_products', 'price']);
+        foreach ($dealables as $productId => $count) {
+            $query->orWhere(function ($query) use ($productId, $count) {
+                $query->where('product_id', $productId)->where('number_of_products', '<=', $count);
+            });
+        }
+
+        foreach ($query->get()->toArray() as $deal) {
+            $deals[$deal['product_id']][] = $deal;
+        }
+
+        return $deals;
+    }
+
+    /**
+     * @param Basket $basket
+     * @param array $deals
+     */
+    public function applyDealsOnBasket(Basket $basket, array $deals) : void
+    {
         foreach ($basket->getRawProducts() as $product) {
-            if (array_key_exists($product->getCode(), $relatedDeals)) {
+            if (array_key_exists($product->getCode(), $deals)) {
                 $this->applyDealsToProduct(
                     $basket,
                     clone $product,
-                    $relatedDeals[$product->getCode()]
+                    $deals[$product->getCode()]
                 );
             } else {
                 $basket->add($product);
@@ -119,42 +152,5 @@ class ProductDealsService implements ProductDealsServiceInterface
         $newProduct->setCount($newProduct->getCount()+1);
         $rawProduct->setCount($rawProduct->getCount() - $deal['number_of_products']);
         $this->applyDealToProduct($basket, $rawProduct, $newProduct, $deal);
-    }
-
-    /**
-     * this method only loads deals that are applicable to given products
-     * that's how we deal with thousands of deals!
-     * and it sorts them by their profitability for the user
-     * that's how we solve the multiple rules problem!
-     *
-     * @param Basket $basket
-     * @return array of deals
-     */
-    protected function getRelatedDeals(Basket $basket): array
-    {
-        $deals = [];
-
-        // we only care about products that are at least two of them in basket
-        $dealables = array_filter(array_count_values($basket->getRawProductCodes()), static function ($value) {
-            return $value > 1;
-        });
-        if (empty($dealables)) {
-            return [];
-        }
-
-        // we only load deals that are applicable to the number of each product we have!
-        $query = Deal::select(['product_id', 'number_of_products', 'price']);
-        foreach ($dealables as $productId => $count) {
-            $query->orWhere(function ($query) use ($productId, $count) {
-                $query->where('product_id', $productId)->where('number_of_products', '<=', $count);
-            });
-        }
-
-        // finally we sort deals based on their profit for user and group each products rules together
-        foreach ($query->orderBy('unit_price')->get()->toArray() as $deal) {
-            $deals[$deal['product_id']][] = $deal;
-        }
-
-        return $deals;
     }
 }

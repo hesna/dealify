@@ -19,9 +19,10 @@ interface ProductDealsServiceInterface
 
     /**
      * @param Basket $basket
+     * @param array $deals
      * @return void
      */
-    public function applyDeals(Basket $basket) : void;
+    public function applyDealsOnBasket(Basket $basket, array $deals) : void;
 
     /**
      * @param Product $product
@@ -33,5 +34,11 @@ interface ProductDealsServiceInterface
      * @param Product $product
      * @return mixed
      */
-    public function getProductDeals(Product $product);
+    public function getProductDeals(Product $product): mixed;
+
+    /**
+     * @param Basket $basket
+     * @return array of deals
+     */
+    public function getBasketApplicableDeals(Basket $basket): array;
 }

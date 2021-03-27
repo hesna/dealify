@@ -41,7 +41,10 @@ class BasketService implements BasketServiceInterface
     {
         $basket = new Basket();
         $this->fillBasket($basket, $productIds);
-        $this->dealService->applyDeals($basket);
+        $this->dealService->applyDealsOnBasket(
+            $basket,
+            $this->dealService->getBasketApplicableDeals($basket)
+        );
 
         return $basket;
     }
@@ -50,7 +53,7 @@ class BasketService implements BasketServiceInterface
      * @param Basket $basket
      * @return float|int
      */
-    public function getTotalRawPrice(Basket $basket)
+    public function getTotalRawPrice(Basket $basket): float|int
     {
         return $this->calculatePrice($basket->getRawProducts());
     }
@@ -59,7 +62,7 @@ class BasketService implements BasketServiceInterface
      * @param Basket $basket
      * @return float|int
      */
-    public function getTotalPrice(Basket $basket)
+    public function getTotalPrice(Basket $basket): float|int
     {
         return $this->calculatePrice($basket->getProducts());
     }
@@ -68,7 +71,7 @@ class BasketService implements BasketServiceInterface
      * @param $products
      * @return float|int
      */
-    protected function calculatePrice($products)
+    protected function calculatePrice($products): float|int
     {
         $totalPrice = 0;
         foreach ($products as $product) {
