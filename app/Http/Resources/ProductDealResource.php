@@ -20,7 +20,6 @@ class ProductDealResource extends JsonResource
             'product_id' => $this->product_id,
             'number_of_products' => $this->number_of_products,
             'price' => $this->price,
-            'unit_price' => $this->unit_price,
         ];
     }
 }

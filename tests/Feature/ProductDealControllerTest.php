@@ -51,8 +51,7 @@ class ProductDealControllerTest extends TestCase
         $response->assertStatus(201)->assertJson(function (AssertableJson $json) {
             $json->has('data.2')
                 ->where('data.0.number_of_products', 3)
-                ->where('data.1.price', 900)
-                ->where('data.1.unit_price', 180);
+                ->where('data.1.price', 900);
         });
     }
 

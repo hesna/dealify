@@ -100,7 +100,7 @@ class ProductDealsService implements ProductDealsServiceInterface
     {
         foreach ($basket->getRawProducts() as $product) {
             if (array_key_exists($product->getCode(), $deals)) {
-                $this->applyDealsToProduct(
+                $this->applyDealsOnProduct(
                     $basket,
                     clone $product,
                     $deals[$product->getCode()]
@@ -116,7 +116,7 @@ class ProductDealsService implements ProductDealsServiceInterface
      * @param BasketProduct $product
      * @param array $deals
      */
-    protected function applyDealsToProduct(Basket $basket, BasketProduct $product, array $deals): void
+    protected function applyDealsOnProduct(Basket $basket, BasketProduct $product, array $deals): void
     {
         if (empty($deals)) {
             return;
