@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Contracts\ArrayCombinationsServiceInterface;
 use App\Contracts\BasketServiceInterface;
 use App\Contracts\BasketFormatterServiceInterface;
 use App\Contracts\ProductServiceInterface;
 use App\Contracts\ProductDealsServiceInterface;
+use App\Services\ArrayCombinationsService;
 use App\Services\BasketService;
 use App\Services\BasketApiFormatterService;
 use App\Services\ProductService;
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(ProductDealsServiceInterface::class, ProductDealsService::class);
         $this->app->bind(BasketFormatterServiceInterface::class, BasketApiFormatterService::class);
+        $this->app->bind(ArrayCombinationsServiceInterface::class, ArrayCombinationsService::class);
     }
 
     /**

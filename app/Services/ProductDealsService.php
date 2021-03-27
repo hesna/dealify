@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Contracts\ArrayCombinationsServiceInterface;
 use App\Contracts\ProductDealsServiceInterface;
 use App\Models\Deal;
 use App\Models\Product;
@@ -12,6 +13,18 @@ use App\Classes\BasketProduct;
  */
 class ProductDealsService implements ProductDealsServiceInterface
 {
+    private ArrayCombinationsService $arrayCombinationsService;
+
+    /**
+     * ProductDealsService constructor.
+     * @param ArrayCombinationsServiceInterface $arrayCombinationsService
+     * @return void
+     */
+    public function __construct(ArrayCombinationsServiceInterface $arrayCombinationsService)
+    {
+        $this->arrayCombinationsService = $arrayCombinationsService;
+    }
+
     /**
      * @param Product $product
      * @param array
@@ -105,6 +118,10 @@ class ProductDealsService implements ProductDealsServiceInterface
      */
     protected function applyDealsToProduct(Basket $basket, BasketProduct $product, array $deals): void
     {
+        if (empty($deals)) {
+            return;
+        }
+        $deals = $this->getMostRewardingDealsCombination($product, $deals);
         foreach ($deals as $deal) {
             $newProduct = new BasketProduct(
                 $deal['number_of_products'] . ' * ' . $product->getCode(),
@@ -118,6 +135,52 @@ class ProductDealsService implements ProductDealsServiceInterface
         if ($product->getCount() > 0) {
             $basket->add($product);
         }
+    }
+
+    /**
+     * Here we use a variation of greedy algorithm to recognize best possible deals combination
+     * to be applied on basket for users to profit the most
+     *
+     * @param BasketProduct $product
+     * @param array $deals
+     * @return array
+     */
+    private function getMostRewardingDealsCombination(BasketProduct $product, array $deals): array
+    {
+        $allCombinations = $this->arrayCombinationsService->getCombinations($deals);
+        $totalPrices = [];
+        foreach ($allCombinations as $key => $combination) {
+            $tempProduct = clone $product;
+            $totalPrices[$key] = 0;
+            foreach ($combination as $deal) {
+                if ($tempProduct->getCount() < $deal['number_of_products']) {
+                    if ($tempProduct->getCount() > 0) {
+                        $totalPrices[$key] += $tempProduct->getPrice() * $tempProduct->getCount();
+                    }
+                    continue;
+                }
+                $totalPrices[$key] += $this->getTotalPriceForDeal($tempProduct, $deal);
+            }
+        }
+        $bestCombination = array_keys($totalPrices, min($totalPrices));
+
+        return $allCombinations[array_pop($bestCombination)];
+    }
+
+    /**
+     * @param BasketProduct $product
+     * @param array $deal
+     * @return int
+     */
+    private function getTotalPriceForDeal(BasketProduct $product, array $deal): int
+    {
+        $totalPrice = 0;
+        while ($product->getCount() >= $deal['number_of_products']) {
+            $product->setCount($product->getCount() - $deal['number_of_products']);
+            $totalPrice += $deal['price'];
+        }
+
+        return $totalPrice;
     }
 
     /**
