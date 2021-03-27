@@ -10,7 +10,13 @@
 			"name": "Create Product",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
@@ -50,7 +56,13 @@
 			"name": "Update Product",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
@@ -112,13 +124,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{endpoint}}/products/20/deals",
+					"raw": "{{endpoint}}/products/5/deals",
 					"host": [
 						"{{endpoint}}"
 					],
 					"path": [
 						"products",
-						"20",
+						"5",
 						"deals"
 					]
 				},
@@ -130,7 +142,13 @@
 			"name": "Delete Product Deals",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{endpoint}}/products/20/deals",
 					"host": [
@@ -150,10 +168,16 @@
 			"name": "Set Product Deals",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"deals\": [\n        {\n            \"number_of_products\": 5,\n            \"price\": 800\n        },\n        {\n            \"number_of_products\": 4,\n            \"price\": 650\n        },\n        {\n            \"number_of_products\": 10,\n            \"price\": 1700\n        },\n        {\n            \"number_of_products\": 2,\n            \"price\": 150\n        }\n    ]\n}",
+					"raw": "{\n    \"deals\": [\n        {\n            \"number_of_products\": 3,\n            \"price\": 88\n        },\n        {\n            \"number_of_products\": 3,\n            \"price\": 130\n        },\n        {\n            \"number_of_products\": 5,\n            \"price\": 200\n        }        \n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -161,13 +185,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{endpoint}}/products/20/deals",
+					"raw": "{{endpoint}}/products/5/deals",
 					"host": [
 						"{{endpoint}}"
 					],
 					"path": [
 						"products",
-						"20",
+						"5",
 						"deals"
 					]
 				},
@@ -179,10 +203,16 @@
 			"name": "Checkout",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"products\": [\n        {\n            \"id\": 5\n        },\n        {\n            \"id\": 4\n        },\n        {\n            \"id\": 10\n        },\n        {\n            \"id\": 2\n        }\n    ]\n}",
+					"raw": "{\n    \"products\": [\n        {\n            \"id\": 5\n        },\n        {\n            \"id\": 4\n        },\n        {\n            \"id\": 10\n        },\n        {\n            \"id\": 5\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,7 +237,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "57a9591f-ec8d-4075-9236-5428b2bc0c3d",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -217,7 +246,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "6d50fc1f-bdfb-4af0-ace2-1b2f17d74736",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -227,10 +255,8 @@
 	],
 	"variable": [
 		{
-			"id": "b90a0286-dad7-47f6-9132-fb73f19f11f7",
 			"key": "endpoint",
 			"value": "http://dealify.local/api"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
